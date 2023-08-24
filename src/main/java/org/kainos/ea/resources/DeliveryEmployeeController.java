@@ -6,6 +6,7 @@ import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
 import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
 import org.kainos.ea.client.FailedToUpdateDeliveryEmployee;
+import org.kainos.ea.client.FailedToValidateEmployee;
 import org.kainos.ea.client.UserDoesNotExistException;
 import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
@@ -33,6 +34,9 @@ public class DeliveryEmployeeController {
         } catch (FailedToCreateDeliveryEmployee e) {
             System.err.println(e.getMessage());
             return Response.serverError().build();
+        } catch (FailedToValidateEmployee e) {
+            System.err.println(e.getMessage());
+            return Response.serverError().build();
         }
     }
     @PUT
@@ -41,6 +45,12 @@ public class DeliveryEmployeeController {
     public Response updateDeliveryEmployee(@PathParam("id") int id, DeliveryEmployeeUpdateRequest employeeToUpdate)
     {
         try{
+            String validation = deliveryEmployeeValidator.isDeliveryUpdateValid(employeeToUpdate);
+            if(validation != null)
+            {
+                System.err.println(validation);
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
             deliveryService.updateDeliveryEmployee(id,employeeToUpdate);
             return Response.ok().build();
         } catch (FailedToUpdateDeliveryEmployee e) {

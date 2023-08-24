@@ -3,24 +3,30 @@ package org.kainos.ea.api;
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
 import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
-import org.kainos.ea.client.FailedToGetDeliveryEmployee;
 import org.kainos.ea.client.FailedToUpdateDeliveryEmployee;
+import org.kainos.ea.client.FailedToValidateEmployee;
 import org.kainos.ea.client.UserDoesNotExistException;
 import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
 import java.sql.SQLException;
 
 public class DeliveryEmployeeService {
-    DeliveryDao deliveryDatabaseService;
+    DeliveryDao deliveryDao;
     DeliveryEmployeeValidator deliveryEmployeeValidator;
     public DeliveryEmployeeService(DeliveryDao deliveryDatabaseService, DeliveryEmployeeValidator deliveryEmployeeValidator) {
-        this.deliveryDatabaseService = deliveryDatabaseService;
+        this.deliveryDao = deliveryDatabaseService;
         this.deliveryEmployeeValidator = deliveryEmployeeValidator;
     }
-    public int createDeliveryEmployee(DeliveryEmployeeRequest deliveryEmployee) throws FailedToCreateDeliveryEmployee
+    public int createDeliveryEmployee(DeliveryEmployeeRequest deliveryEmployee) throws FailedToCreateDeliveryEmployee, FailedToValidateEmployee
     {
         try{
-            int id = deliveryDatabaseService.createDeliveryEmployee(deliveryEmployee);
+            String validation = deliveryEmployeeValidator.isEmployeeValid(deliveryEmployee);
+            if(validation != null)
+            {
+                System.err.println(validation);
+                throw new FailedToValidateEmployee();
+            }
+            int id = deliveryDao.createDeliveryEmployee(deliveryEmployee);
             if(id == -1)
             {
                 throw new FailedToCreateDeliveryEmployee();
@@ -39,7 +45,7 @@ public class DeliveryEmployeeService {
                 System.err.println(validation);
                 throw new UserDoesNotExistException();
             }
-            deliveryDatabaseService.updateDeliveryEmployee(id,deliveryEmployee);
+            deliveryDao.updateDeliveryEmployee(id,deliveryEmployee);
         }
         catch (SQLException e)
         {
