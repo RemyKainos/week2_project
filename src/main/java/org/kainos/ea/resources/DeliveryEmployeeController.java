@@ -30,7 +30,8 @@ public class DeliveryEmployeeController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createDeliveryEmployee(DeliveryEmployeeRequest employeeToCreate){
         try{
-            return Response.ok(deliveryService.createDeliveryEmployee(employeeToCreate)).build();
+            deliveryService.createDeliveryEmployee(employeeToCreate);
+            return Response.status(Response.Status.CREATED).build();
         } catch (FailedToCreateDeliveryEmployee e) {
             System.err.println(e.getMessage());
             return Response.serverError().build();
