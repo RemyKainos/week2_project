@@ -1,20 +1,22 @@
 package org.kainos.ea.api;
 
-import org.kainos.ea.cli.DeliveryEmployeeRequest;
-import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
-import org.kainos.ea.client.*;
+import org.kainos.ea.cli.*;
+import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
+import org.kainos.ea.client.FailedToGetDeliveryEmployee;
+import org.kainos.ea.client.FailedToUpdateDeliveryEmployee;
+import org.kainos.ea.client.DeliveryEmployeeDoesNotExistException;
 import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
 import java.sql.SQLException;
 
 public class DeliveryEmployeeService {
-    DeliveryDao deliveryDao;
+    DeliveryDao deliveryDatabaseService;
     DeliveryEmployeeValidator deliveryEmployeeValidator;
     public DeliveryEmployeeService(DeliveryDao deliveryDatabaseService, DeliveryEmployeeValidator deliveryEmployeeValidator) {
-        this.deliveryDao = deliveryDatabaseService;
+        this.deliveryDatabaseService = deliveryDatabaseService;
         this.deliveryEmployeeValidator = deliveryEmployeeValidator;
     }
-    public int createDeliveryEmployee(DeliveryEmployeeRequest deliveryEmployee) throws FailedToCreateDeliveryEmployee, FailedToValidateEmployee
+    public int createDeliveryEmployee(DeliveryEmployeeRequest deliveryEmployee) throws FailedToCreateDeliveryEmployee
     {
         try{
             String validation = deliveryEmployeeValidator.isEmployeeValid(deliveryEmployee);
@@ -38,14 +40,15 @@ public class DeliveryEmployeeService {
             throw new FailedToCreateDeliveryEmployee();
         }
     }
-    public void updateDeliveryEmployee(int id,DeliveryEmployeeUpdateRequest deliveryEmployee) throws FailedToUpdateDeliveryEmployee, SQLException, DeliveryEmployeeDoesNotExist {
+    public void updateDeliveryEmployee(int id,DeliveryEmployeeUpdateRequest deliveryEmployee) throws FailedToUpdateDeliveryEmployee, SQLException, DeliveryEmployeeDoesNotExistException {
         try{
-            if(!deliveryEmployeeValidator.doesEmployeeExist(id))
+            boolean validation = deliveryEmployeeValidator.doesEmployeeExist(id);
+            if(!validation)
             {
-                System.err.println("Employee does not exist");
-                throw new DeliveryEmployeeDoesNotExist();
+                System.err.println(validation);
+                throw new DeliveryEmployeeDoesNotExistException();
             }
-            deliveryDao.updateDeliveryEmployee(id,deliveryEmployee);
+            deliveryDatabaseService.updateDeliveryEmployee(id,deliveryEmployee);
         }
         catch (SQLException e)
         {
@@ -54,11 +57,17 @@ public class DeliveryEmployeeService {
         }
     }
 
-    public void deleteOrder(int id) throws FailedToDeleteDeliveryEmployee {
-        try{
-            deliveryDao.deleteDeliveryEmployee(id);
+    public GetDeliveryEmployee getDeliveryEmployee(int id) throws DeliveryEmployeeDoesNotExistException, FailedToGetDeliveryEmployee{
+        try {
+            Employee deliveryEmployee = deliveryDatabaseService.getDeliveryEmployee(id);
+
+            if (deliveryEmployee == null) {
+                throw new DeliveryEmployeeDoesNotExistException();
+            }
+            return new GetDeliveryEmployee(deliveryEmployee.getName(),deliveryEmployee.getSalary(),deliveryEmployee.getBankAccountNumber(),deliveryEmployee.getNationInsuranceNumber());
         } catch (SQLException e) {
-            throw new FailedToDeleteDeliveryEmployee();
+            System.err.println(e.getMessage());
+            throw new FailedToGetDeliveryEmployee();
         }
     }
 }
