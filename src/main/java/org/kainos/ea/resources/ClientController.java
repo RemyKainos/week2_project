@@ -1,7 +1,9 @@
 package org.kainos.ea.resources;
 
+import io.swagger.annotations.Api;
 import org.kainos.ea.api.ClientService;
 import org.kainos.ea.api.FailedToAssignClientException;
+import org.kainos.ea.cli.ClientProjectRequest;
 import org.kainos.ea.client.InvalidClientException;
 import org.kainos.ea.client.InvalidProjectException;
 import org.kainos.ea.core.ClientValidator;
@@ -26,10 +28,9 @@ public class ClientController {
     @POST
     @Path("/client")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response assignClientToProject(int clientId, int projectId){
+    public Response assignClientToProject(ClientProjectRequest clientProjectRequest){
         try{
-            clientService.assignClientToProject(clientId, projectId);
-            return Response.ok().build();
+            return Response.ok(clientService.assignClientToProject(clientProjectRequest.getClientId(), clientProjectRequest.getProjectId())).build();
         } catch (FailedToAssignClientException e) {
             System.err.println(e.getMessage());
             return Response.serverError().build();

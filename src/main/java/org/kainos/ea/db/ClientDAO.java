@@ -2,10 +2,7 @@ package org.kainos.ea.db;
 
 import org.kainos.ea.cli.Client;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ClientDAO {
     public Client getClientById(int clientId) throws SQLException {
@@ -16,7 +13,7 @@ public class ClientDAO {
 
         ResultSet rs = selectStatement.executeQuery();
 
-        while(rs.next()){
+        if(rs.next()){
             return new Client(
                     rs.getInt("client_id"),
                     rs.getString("name"),
@@ -28,13 +25,21 @@ public class ClientDAO {
 
         return null;
     }
-    public void assignClientToProject(int clientId, int projectId) throws SQLException {
+    public int assignClientToProject(int clientId, int projectId) throws SQLException {
         Connection connection = DbConnector.getConnection();
 
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `Project_Client` (`project_id`, `client_id`) VALUES ('?', '?');");
-        insertStatement.setInt(1, clientId);
-        insertStatement.setInt(2, projectId);
+        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `Project_Client` (`project_id`, `client_id`) VALUES ('?', '?');", Statement.RETURN_GENERATED_KEYS);
+        insertStatement.setInt(1, projectId);
+        insertStatement.setInt(2, clientId);
 
         insertStatement.executeUpdate();
+
+        ResultSet rs = insertStatement.getGeneratedKeys();
+
+        if(rs.next()){
+            return rs.getInt(1);
+        }
+
+        return -1;
     }
 }

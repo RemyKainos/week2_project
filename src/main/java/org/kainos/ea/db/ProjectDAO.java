@@ -17,7 +17,7 @@ public class ProjectDAO {
 
         ResultSet rs = selectStatement.executeQuery();
 
-        while(rs.next()){
+        if(rs.next()){
             return new Project(rs.getString("name"),
                     rs.getInt("value"),
                     rs.getInt("lead_id"),

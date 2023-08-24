@@ -18,8 +18,8 @@ public class ProjectValidator {
 
         if(project == null){
             return "Project does not exist";
+        } else{
+            return null;
         }
-
-        return null;
     }
 }
