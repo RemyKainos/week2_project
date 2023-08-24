@@ -16,7 +16,8 @@ import io.swagger.annotations.Api;
 @Api("Delivery Employee")
 @Path("/api")
 public class DeliveryEmployeeController {
-    DeliveryEmployeeService deliveryService = new DeliveryEmployeeService();
+    DeliveryDao deliveryDao = new DeliveryDao();
+    DeliveryEmployeeService deliveryService = new DeliveryEmployeeService(deliveryDao);
     @POST
     @Path("/deliveryEmployee")
     @Produces(MediaType.APPLICATION_JSON)
