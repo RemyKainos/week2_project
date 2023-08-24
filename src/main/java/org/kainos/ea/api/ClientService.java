@@ -19,11 +19,7 @@ public class ClientService {
         this.projectValidator = projectValidator;
     }
 
-<<<<<<< HEAD
-    public void assignClientToProject(int clientId, int projectId) throws FailedToAssignClientException, InvalidClientException, InvalidProjectException {
-=======
     public int assignClientToProject(int clientId, int projectId) throws FailedToAssignClientException, InvalidClientException, InvalidProjectException {
->>>>>>> rebase
         try{
             // Check if client is valid
             String validClient = clientValidator.isValidClientId(clientId);
@@ -35,25 +31,14 @@ public class ClientService {
             // Check if project exists
             String validProject = projectValidator.isValidProjectId(projectId);
 
-<<<<<<< HEAD
-            if(validProject == null){
-=======
             if(validProject != null){
->>>>>>> rebase
                 throw new InvalidProjectException(validProject);
             }
 
             // Assign client
-<<<<<<< HEAD
-            clientDAO.assignClientToProject(clientId, projectId);
-        } catch (SQLException e){
-            throw new FailedToAssignClientException();
-=======
             return clientDAO.assignClientToProject(clientId, projectId);
         } catch (SQLException e){
-            throw new FailedTo
-            AssignClientException();
->>>>>>> rebase
+            throw new FailedToAssignClientException();
         }
     }
 
