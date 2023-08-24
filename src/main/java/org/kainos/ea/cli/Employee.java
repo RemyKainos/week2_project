@@ -1,12 +1,21 @@
 package org.kainos.ea.cli;
 
 public class Employee {
+
+    public Employee(int id, String name, double salary, String bankAccountNumber, String nationInsuranceNumber) {
+        setId(id);
+        setName(name);
+        setSalary(salary);
+        setBankAccountNumber(bankAccountNumber);
+        setNationInsuranceNumber(nationInsuranceNumber);
+
     public Employee(String name, int id, double salary, String bankAccountNumber, String nationInsuranceNumber) {
         this.name = name;
         this.id = id;
         this.salary = salary;
         this.bankAccountNumber = bankAccountNumber;
         this.nationInsuranceNumber = nationInsuranceNumber;
+
     }
 
     public String getName() {
