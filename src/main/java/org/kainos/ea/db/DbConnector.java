@@ -16,7 +16,7 @@ public class DbConnector {
             return conn;
         }
         try {
-            FileInputStream propsStream = new FileInputStream("~/db.properties");
+            FileInputStream propsStream = new FileInputStream("src/db.properties");
 
             Properties props = new Properties();
             props.load(propsStream);
