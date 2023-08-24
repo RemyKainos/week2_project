@@ -6,9 +6,8 @@ import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
 import org.kainos.ea.db.DeliveryDao;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import io.swagger.annotations.Api;
@@ -25,6 +24,23 @@ public class DeliveryEmployeeController {
         try{
             return Response.ok(deliveryService.createDeliveryEmployee(employeeToCreate)).build();
         } catch (FailedToCreateDeliveryEmployee e) {
+            System.err.println(e.getMessage());
+            return Response.serverError().build();
+        }
+    }
+    @DELETE
+    @Path("/delivery/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteDeliveryEmployee(@PathParam("id") int id)
+    {
+        try
+        {
+            deliveryService.deleteOrder(id);
+            return Response.ok().build();
+        } catch (OrderDoesNotExistException e) {
+            System.err.println(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (FailedToDeleteOrderException e) {
             System.err.println(e.getMessage());
             return Response.serverError().build();
         }
