@@ -1,6 +1,5 @@
 package org.kainos.ea.db;
 
-import org.kainos.ea.cli.Client;
 import org.kainos.ea.cli.Project;
 
 import java.sql.Connection;

@@ -1,15 +1,12 @@
 package org.kainos.ea.resources;
 
-import jdk.jfr.internal.Repository;
 import org.kainos.ea.api.DeliveryEmployeeService;
-import org.kainos.ea.cli.DeliveryEmployee;
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
 import org.kainos.ea.client.*;
 import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

@@ -1,5 +1,4 @@
 package org.kainos.ea.db;
-import org.kainos.ea.cli.DeliveryEmployee;
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
 import org.kainos.ea.cli.Employee;

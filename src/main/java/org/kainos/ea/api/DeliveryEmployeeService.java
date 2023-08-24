@@ -18,16 +18,20 @@ public class DeliveryEmployeeService {
     {
         try{
             String validation = deliveryEmployeeValidator.isEmployeeValid(deliveryEmployee);
+
             if(validation != null)
             {
                 System.err.println(validation);
                 throw new FailedToValidateEmployee();
             }
+
             int id = deliveryDao.createDeliveryEmployee(deliveryEmployee);
+
             if(id == -1)
             {
                 throw new FailedToCreateDeliveryEmployee();
             }
+
             return id;
         } catch (SQLException e) {
             System.err.println(e.getMessage());

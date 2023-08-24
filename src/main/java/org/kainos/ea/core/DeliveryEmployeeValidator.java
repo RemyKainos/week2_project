@@ -1,9 +1,7 @@
 package org.kainos.ea.core;
 
-import org.kainos.ea.cli.DeliveryEmployee;
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
-import org.kainos.ea.client.FailedToGetDeliveryEmployee;
 import org.kainos.ea.db.DeliveryDao;
 
 import java.sql.SQLException;
