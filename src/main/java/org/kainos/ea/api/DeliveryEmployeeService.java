@@ -1,21 +1,32 @@
 package org.kainos.ea.api;
 
-import org.eclipse.jetty.server.Authentication;
-import org.kainos.ea.cli.DeliveryEmployee;
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
+import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
+import org.kainos.ea.client.DeliveryEmployeeDoesNotExist;
 import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
+import org.kainos.ea.client.FailedToUpdateDeliveryEmployee;
+import org.kainos.ea.client.FailedToValidateEmployee;
+import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
 import java.sql.SQLException;
 
 public class DeliveryEmployeeService {
-    DeliveryDao deliveryDatabaseService;
-    public DeliveryEmployeeService(DeliveryDao deliveryDatabaseService) {
-        this.deliveryDatabaseService = deliveryDatabaseService;
+    DeliveryDao deliveryDao;
+    DeliveryEmployeeValidator deliveryEmployeeValidator;
+    public DeliveryEmployeeService(DeliveryDao deliveryDatabaseService, DeliveryEmployeeValidator deliveryEmployeeValidator) {
+        this.deliveryDao = deliveryDatabaseService;
+        this.deliveryEmployeeValidator = deliveryEmployeeValidator;
     }
-    public int createDeliveryEmployee(DeliveryEmployeeRequest deliveryEmployee) throws FailedToCreateDeliveryEmployee
+    public int createDeliveryEmployee(DeliveryEmployeeRequest deliveryEmployee) throws FailedToCreateDeliveryEmployee, FailedToValidateEmployee
     {
         try{
-            int id = deliveryDatabaseService.createDeliveryEmployee(deliveryEmployee);
+            String validation = deliveryEmployeeValidator.isEmployeeValid(deliveryEmployee);
+            if(validation != null)
+            {
+                System.err.println(validation);
+                throw new FailedToValidateEmployee();
+            }
+            int id = deliveryDao.createDeliveryEmployee(deliveryEmployee);
             if(id == -1)
             {
                 throw new FailedToCreateDeliveryEmployee();
@@ -24,6 +35,21 @@ public class DeliveryEmployeeService {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             throw new FailedToCreateDeliveryEmployee();
+        }
+    }
+    public void updateDeliveryEmployee(int id,DeliveryEmployeeUpdateRequest deliveryEmployee) throws FailedToUpdateDeliveryEmployee, SQLException, DeliveryEmployeeDoesNotExist {
+        try{
+            if(!deliveryEmployeeValidator.doesEmployeeExist(id))
+            {
+                System.err.println("Employee does not exist");
+                throw new DeliveryEmployeeDoesNotExist();
+            }
+            deliveryDao.updateDeliveryEmployee(id,deliveryEmployee);
+        }
+        catch (SQLException e)
+        {
+            System.err.println(e.getMessage());
+            throw new FailedToUpdateDeliveryEmployee();
         }
     }
 }

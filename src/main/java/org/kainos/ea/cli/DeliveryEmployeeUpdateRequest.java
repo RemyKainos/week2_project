@@ -1,6 +1,6 @@
 package org.kainos.ea.cli;
 
-public class DeliveryEmployeeRequest {
+public class DeliveryEmployeeUpdateRequest {
     public String getName() {
         return name;
     }
@@ -25,15 +25,7 @@ public class DeliveryEmployeeRequest {
         this.bankAccountNumber = bankAccountNumber;
     }
 
-    public String getNationInsuranceNumber() {
-        return nationInsuranceNumber;
-    }
-
-    public void setNationInsuranceNumber(String nationInsuranceNumber) {
-        this.nationInsuranceNumber = nationInsuranceNumber;
-    }
     private String name;
     private double salary;
     private String bankAccountNumber;
-    private String nationInsuranceNumber;
 }
