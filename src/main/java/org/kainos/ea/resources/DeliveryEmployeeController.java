@@ -1,13 +1,11 @@
 package org.kainos.ea.resources;
 
+import jdk.jfr.internal.Repository;
 import org.kainos.ea.api.DeliveryEmployeeService;
 import org.kainos.ea.cli.DeliveryEmployee;
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
-import org.kainos.ea.client.DeliveryEmployeeDoesNotExist;
-import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
-import org.kainos.ea.client.FailedToUpdateDeliveryEmployee;
-import org.kainos.ea.client.FailedToValidateEmployee;
+import org.kainos.ea.client.*;
 import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
 
@@ -62,6 +60,25 @@ public class DeliveryEmployeeController {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+    @DELETE
+    @Path("/delivery/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteDeliveryEmployee(@PathParam("id") int id)
+    {
+        try
+        {
+            if(!deliveryEmployeeValidator.doesEmployeeExist(id))
+            {
+                System.err.println("Employee does not exist.");
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+            deliveryService.deleteOrder(id);
+            return Response.ok().build();
+        } catch (SQLException | FailedToDeleteDeliveryEmployee e) {
+            System.err.println(e.getMessage());
+            return Response.serverError().build();
         }
     }
 }
