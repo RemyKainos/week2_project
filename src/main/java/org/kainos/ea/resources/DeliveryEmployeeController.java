@@ -4,10 +4,10 @@ import org.kainos.ea.api.DeliveryEmployeeService;
 import org.kainos.ea.cli.DeliveryEmployee;
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
+import org.kainos.ea.client.DeliveryEmployeeDoesNotExist;
 import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
 import org.kainos.ea.client.FailedToUpdateDeliveryEmployee;
 import org.kainos.ea.client.FailedToValidateEmployee;
-import org.kainos.ea.client.UserDoesNotExistException;
 import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
 
@@ -57,7 +57,7 @@ public class DeliveryEmployeeController {
         } catch (FailedToUpdateDeliveryEmployee e) {
             System.err.println(e.getMessage());
             return  Response.serverError().build();
-        } catch (UserDoesNotExistException e) {
+        } catch (DeliveryEmployeeDoesNotExist e) {
             System.err.println(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (SQLException e) {
