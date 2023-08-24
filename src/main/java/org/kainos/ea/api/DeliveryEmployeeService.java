@@ -32,8 +32,8 @@ public class DeliveryEmployeeService {
     }
     public void updateDeliveryEmployee(int id,DeliveryEmployeeUpdateRequest deliveryEmployee) throws FailedToUpdateDeliveryEmployee, SQLException, DeliveryEmployeeDoesNotExistException {
         try{
-            String validation = deliveryEmployeeValidator.doesEmployeeExist(id);
-            if(validation != null)
+            boolean validation = deliveryEmployeeValidator.doesEmployeeExist(id);
+            if(!validation)
             {
                 System.err.println(validation);
                 throw new DeliveryEmployeeDoesNotExistException();
