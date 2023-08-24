@@ -1,6 +1,9 @@
 package org.kainos.ea.cli;
 
 public class Employee {
+    public Employee(int id, String name, double salary, String bankAccountNumber, String nationInsuranceNumber) {
+    }
+
     public String getName() {
         return name;
     }
