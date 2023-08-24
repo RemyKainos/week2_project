@@ -32,19 +32,4 @@ public class SalesDAO {
         }
         return -1;
     }
-
-    /*public void updateProduct(int id, SalesEmployee sales) throws SalesEmployeeDoesNotExistException, FailedToUpdateSalesEmployeeException {
-        Product productToUpdate = productDao.getProductById(id);
-
-        if (productToUpdate == null) {
-            throw new ProductDoesNotExistException();
-        }
-
-        productDao.updateProduct(id, product);
-
-    } catch (SQLException e) {
-        System.err.println(e.getMessage());
-        throw new FailedToUpdateProductException();
-    }
-    }*/
 }

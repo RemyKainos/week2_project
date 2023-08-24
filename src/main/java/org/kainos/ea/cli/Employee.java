@@ -2,6 +2,11 @@ package org.kainos.ea.cli;
 
 public class Employee {
     public Employee(int id, String name, double salary, String bankAccountNumber, String nationInsuranceNumber) {
+        setId(id);
+        setName(name);
+        setSalary(salary);
+        setBankAccountNumber(bankAccountNumber);
+        setNationInsuranceNumber(nationInsuranceNumber);
     }
 
     public String getName() {
