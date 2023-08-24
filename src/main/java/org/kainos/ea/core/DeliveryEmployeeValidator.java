@@ -15,11 +15,8 @@ public class DeliveryEmployeeValidator {
         this.deliveryDao = deliveryDao;
     }
 
-    public String doesEmployeeExist(int id) throws SQLException {
-        if (deliveryDao.getDeliveryEmployee(id) == null) {
-            return "Employee does not exists";
-        }
-        return null;
+    public boolean doesEmployeeExist(int id) throws SQLException {
+        return deliveryDao.getDeliveryEmployee(id) == null;
     }
 
     public String isEmployeeValid(DeliveryEmployeeRequest deliveryEmployee) {

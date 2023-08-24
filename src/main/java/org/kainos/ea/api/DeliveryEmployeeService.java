@@ -2,10 +2,10 @@ package org.kainos.ea.api;
 
 import org.kainos.ea.cli.DeliveryEmployeeRequest;
 import org.kainos.ea.cli.DeliveryEmployeeUpdateRequest;
+import org.kainos.ea.client.DeliveryEmployeeDoesNotExist;
 import org.kainos.ea.client.FailedToCreateDeliveryEmployee;
 import org.kainos.ea.client.FailedToUpdateDeliveryEmployee;
 import org.kainos.ea.client.FailedToValidateEmployee;
-import org.kainos.ea.client.UserDoesNotExistException;
 import org.kainos.ea.core.DeliveryEmployeeValidator;
 import org.kainos.ea.db.DeliveryDao;
 import java.sql.SQLException;
@@ -37,13 +37,12 @@ public class DeliveryEmployeeService {
             throw new FailedToCreateDeliveryEmployee();
         }
     }
-    public void updateDeliveryEmployee(int id,DeliveryEmployeeUpdateRequest deliveryEmployee) throws FailedToUpdateDeliveryEmployee, SQLException, UserDoesNotExistException {
+    public void updateDeliveryEmployee(int id,DeliveryEmployeeUpdateRequest deliveryEmployee) throws FailedToUpdateDeliveryEmployee, SQLException, DeliveryEmployeeDoesNotExist {
         try{
-            String validation = deliveryEmployeeValidator.doesEmployeeExist(id);
-            if(validation != null)
+            if(!deliveryEmployeeValidator.doesEmployeeExist(id))
             {
-                System.err.println(validation);
-                throw new UserDoesNotExistException();
+                System.err.println("Employee does not exist");
+                throw new DeliveryEmployeeDoesNotExist();
             }
             deliveryDao.updateDeliveryEmployee(id,deliveryEmployee);
         }
