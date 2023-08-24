@@ -17,7 +17,11 @@ public class ProjectDAO {
 
         ResultSet rs = selectStatement.executeQuery();
 
+<<<<<<< HEAD
         while(rs.next()){
+=======
+        if(rs.next()){
+>>>>>>> rebase
             return new Project(rs.getString("name"),
                     rs.getInt("value"),
                     rs.getInt("lead_id"),

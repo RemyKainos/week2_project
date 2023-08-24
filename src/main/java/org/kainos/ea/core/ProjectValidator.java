@@ -18,8 +18,14 @@ public class ProjectValidator {
 
         if(project == null){
             return "Project does not exist";
+<<<<<<< HEAD
         }
 
         return null;
+=======
+        } else{
+            return null;
+        }
+>>>>>>> rebase
     }
 }
