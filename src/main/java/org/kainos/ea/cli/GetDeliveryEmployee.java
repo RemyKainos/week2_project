@@ -1,21 +1,11 @@
 package org.kainos.ea.cli;
 
-public class Employee {
-
-    public Employee(int id, String name, double salary, String bankAccountNumber, String nationInsuranceNumber) {
-        setId(id);
-        setName(name);
-        setSalary(salary);
-        setBankAccountNumber(bankAccountNumber);
-        setNationInsuranceNumber(nationInsuranceNumber);
-
-    public Employee(String name, int id, double salary, String bankAccountNumber, String nationInsuranceNumber) {
+public class GetDeliveryEmployee {
+    public GetDeliveryEmployee(String name, double salary, String bankAccountNumber, String nationInsuranceNumber) {
         this.name = name;
-        this.id = id;
         this.salary = salary;
         this.bankAccountNumber = bankAccountNumber;
         this.nationInsuranceNumber = nationInsuranceNumber;
-
     }
 
     public String getName() {
@@ -24,14 +14,6 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public double getSalary() {
@@ -59,7 +41,6 @@ public class Employee {
     }
 
     private String name;
-    private int id;
     private double salary;
     private String bankAccountNumber;
     private String nationInsuranceNumber;
